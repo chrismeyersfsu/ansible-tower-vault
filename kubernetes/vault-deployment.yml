@@ -1,0 +1,26 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: tower-eng-vault
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: tower-eng-vault
+    spec:
+      containers:
+       - name: tower-eng-vault
+         image: chrismeyers/vault:latest
+         imagePullPolicy: Always
+         ports:
+          - containerPort: 8200
+            name: tower-eng-vault
+         volumeMounts:
+           - name: vault-store
+             mountPath: /vault_store
+      volumes:
+       - name: vault-store
+         gcePersistentDisk:
+           pdName: vault-store
+           fsType: ext4

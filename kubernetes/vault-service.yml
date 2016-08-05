@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+ name: tower-eng-vault
+ labels:
+   name: tower-eng-vault
+spec:
+ type: LoadBalancer
+ ports:
+   - port: 8200
+     targetPort: 8200
+     protocol: TCP
+ selector:
+   app: tower-eng-vault
