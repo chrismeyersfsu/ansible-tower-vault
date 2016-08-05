@@ -13,8 +13,8 @@
         src: "{{ playbook_dir }}/templates/policy.hcl.j2"
         dest: "{{ policy_file }}"
 
-   - name: "Add policy to vault"
-     shell: "{{ vault_bin }} policy-write {{ username }} {{ policy_file }}"
+    - name: "Add policy to vault"
+      shell: "{{ vault_bin }} policy-write {{ username }} {{ policy_file }}"
 
     - name: "Create vault user"
       shell: "{{ vault_bin }} write auth/userpass/users/{{ username }} password={{ password }} policies={{ username }}"
