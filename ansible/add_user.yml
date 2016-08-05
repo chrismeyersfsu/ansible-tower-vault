@@ -3,15 +3,19 @@
   vars:
     vault_addr: 'http://vault.testing.ansible.com:8200'
     policy_file: "/tmp/policy.hcl"
+    vault_bin: "{{ playbook_dir }}/files/vault"
+  environment:
+    VAULT_ADDR: '{{ vault_addr }}'
+    VAULT_TOKEN: '{{ vault_token }}'
   tasks:
-    - name: "Create policy for soon to be created user"
+    - name: "Create policy file"
       template:
         src: "{{ playbook_dir }}/templates/policy.hcl.j2"
         dest: "{{ policy_file }}"
 
+   - name: "Add policy to vault"
+     shell: "{{ vault_bin }} policy-write {{ username }} {{ policy_file }}"
+
     - name: "Create vault user"
-      command: "{{ playbook_dir }}/files/vault write auth/userpass/users/{{ username }} password={{ password }} policies={{ policy_file }}"
-      environment:
-        VAULT_ADDR: '{{ vault_addr }}'
-        VAULT_TOKEN: '{{ vault_token }}'
+      shell: "{{ vault_bin }} write auth/userpass/users/{{ username }} password={{ password }} policies={{ username }}"
 
